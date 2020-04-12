@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.irs.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.irs.bean.TbComment" >
+    <id column="id" property="id" />
+    <result column="uid" property="uid"  />
+    <result column="pid" property="pid"/>
+    <result column="content" property="content"  />
+    <result column="score" property="score"  />
+    <result column="review" property="review"  />
+    <result column="status" property="status"  />
+    <result column="createtime" property="createtime" />
+     <result column="uname" property="uname" />
+      <result column="pname" property="pname" />
+  </resultMap>
+
+  <select id="getlist" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   select a.*,b.username as uname,c.pname as pname from tb_comment a join tb_users b on a.uid=b.uid join tb_product c on a.pid=c.pid 
+   limit #{page},#{size}
+    
+  </select>
+
+  
+  <insert id="insert" parameterType="com.irs.bean.TbComment" >
+   
+    insert into t_comment (uid,pid,content,score, review,createtime)
+    values (#{uid}, #{pid}, #{content},#{score} ,#{review},#{createtime})
+  </insert>
+ 
+  <update id="update" parameterType="com.irs.bean.TbComment" >
+    
+    update tb_comment set status=#{status}  where id = #{id}
+  </update>
+ <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+  select a.*,b.username as uname,c.pname as pname from tb_comment a join tb_users b on a.uid=b.uid join tb_product c on a.pid=c.pid 
+  where a.uid=#{uid}
+ 
+ </select>
+  
+</mapper>

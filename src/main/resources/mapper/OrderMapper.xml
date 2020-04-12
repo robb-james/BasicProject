@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.irs.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.irs.bean.Order" >
+    <constructor >
+      <idArg column="oid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="uid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="did" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="otime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="ototal" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="ostate" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="paytype" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="oboard" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select from tb_order where oid = #{oid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order  where oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.irs.bean.Order" >
+    <selectKey resultType="java.lang.String" keyProperty="oid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="otime != null" >
+        otime,
+      </if>
+      <if test="ototal != null" >
+        ototal,
+      </if>
+      <if test="ostate != null" >
+        ostate,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="oboard != null" >
+        oboard,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="did != null" >
+        #{did,jdbcType=INTEGER},
+      </if>
+      <if test="otime != null" >
+        #{otime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ototal != null" >
+        #{ototal,jdbcType=DOUBLE},
+      </if>
+      <if test="ostate != null" >
+        #{ostate,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="oboard != null" >
+        #{oboard,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.irs.bean.Order" >
+    update tb_order
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="did != null" >
+        did = #{did,jdbcType=INTEGER},
+      </if>
+      <if test="otime != null" >
+        otime = #{otime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ototal != null" >
+        ototal = #{ototal,jdbcType=DOUBLE},
+      </if>
+      <if test="ostate != null" >
+        ostate = #{ostate,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="oboard != null" >
+        oboard = #{oboard,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where oid = #{oid,jdbcType=VARCHAR}
+  </update>
+
+    <!-- 根据商家id查询分页数据start 和size查询数据 -->
+	<select id="findByPage" resultType="com.irs.bean.Order" parameterType="Integer">
+		select a.oid,a.otime,a.ostate,b.gname as gname,b.gimage as gimage,b.num  as num from tb_order a join tb_orderdetail b on a.oid=b.oid
+    <where>
+    <if test="bean.uid !=null and bean.uid !=0">
+   and  a.uid=#{bean.uid}
+    </if>
+    <if test="bean.ostate !=null and bean.ostate !=0">
+   and  a.ostate=#{bean.ostate}
+    </if>
+    <if test="bean.oid !=null and bean.oid !=''">
+   and  a.oid=#{bean.oid}
+    </if>
+    </where>
+     limit #{start},#{length}
+	</select>
+	
+	<!-- 根据商家id取得记录的总数 -->
+	<select id="selectCount" resultType="java.lang.Integer">
+			select count(*) from tb_order a join tb_orderdetail b on a.oid=b.oid
+      where a.uid=#{uid}
+	</select>
+	
+  
+</mapper>

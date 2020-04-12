@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.irs.dao.ProductMapper">
+	<resultMap type="com.irs.bean.Product" id="Goods">
+		<id column="pid" property="pid" />
+		<result column="uid" property="uid" />
+		<result column="bid" property="bid" />
+		<result column="cid" property="cid" />
+		<result column="pname" property="pname" />
+		<result column="cityprice" property="cityprice" />
+		<result column="sellprice" property="sellprice" />
+		<result column="pimage" property="pimage" />
+		<result column="heat" property="heat" />
+		<result column="bewrite" property="bewrite" />
+		<result column="state" property="state" />
+		<result column="stock" property="stock" />
+		<result column="format" property="format" />
+		<result column="freight" property="freight" />
+		<result column="createtime" property="createtime" />
+	</resultMap>
+
+
+	<select id="list" parameterType="com.irs.bean.Product" resultMap="Goods">
+		select a.*,b.bname as bname  from tb_product a join sys_bigclass b on a.bid=b.bid  
+		
+		<where>
+		   <if test="bean.uid !=null and bean.uid !=''">
+		   and a.uid=#{bean.uid}
+		    </if>
+			<if test="bean.pname !=null  and bean.pname !=''">
+				and a.pname  like '%${bean.pname}%'
+			</if>
+			<if test="bean.bid !=0 and bean.bid !=null">
+			and a.bid =#{bean.bid}
+			</if>
+		</where>
+
+		order by pid desc limit #{start},#{length}
+	</select>
+	
+	<update id="update" parameterType="com.irs.bean.Product">
+	update tb_product 
+	<set>
+	<if test="bean.bid   !=null and bean.bid   !=''">
+	       bid=#{bean.bid },
+	</if>
+	<if test="bean.cid   !=null and bean.cid   !=''">
+	       cid=#{bean.cid },
+	</if>
+	<if test="bean.pname !=null and bean.pname !=''">
+	       pname=#{bean.pname },
+	</if>
+	<if test="bean.cityprice !=null">
+	       cityprice=#{bean.cityprice },
+	</if>
+	<if test="bean.sellprice   !=null ">
+	       sellprice=#{bean.sellprice },
+	</if>
+	<if test="bean.pimage   !=null and bean.pimage   !=''">
+	       pimage=#{bean.pimage },
+	</if>
+	<if test="bean.heat   !=null">
+	       heat=#{bean.heat },
+	</if>
+	<if test="bean.bewrite   !=null and bean.bewrite   !=''">
+	      bewrite =#{bean.bewrite },
+	</if>
+	<if test="bean.state !=null">
+	       state=#{bean.state },
+	</if>
+	<if test="bean.stock  !=null and bean.stock   !=''">
+	       stock=#{bean.stock },
+	</if>
+	<if test="bean.format !=null and bean.format   !=''">
+	       format=#{bean.format },
+	</if>
+	<if test="bean.freight  !=null">
+	       freight=#{bean.freight }
+	</if>
+	</set>
+	where pid=#{bean.pid}
+	</update>
+	
+	<insert id="insert" parameterType="com.irs.bean.Product">
+	insert into tb_product
+	  <trim prefix="(" suffix=")" suffixOverrides="," >
+	    
+	<if test="bean.uid   !=null and bean.uid   !=''">
+	       uid,
+	</if>
+	<if test="bean.bid   !=null and bean.bid   !=''">
+	       bid,
+	</if>
+	<if test="bean.cid   !=null and bean.cid   !=''">
+	       cid,
+	</if>
+	<if test="bean.pname !=null and bean.pname !=''">
+	       pname,
+	</if>
+	<if test="bean.cityprice !=null">
+	       cityprice,
+	</if>
+	<if test="bean.sellprice   !=null ">
+	       sellprice,
+	</if>
+	<if test="bean.pimage   !=null and bean.pimage   !=''">
+	       pimage,
+	</if>
+	<if test="bean.heat   !=null">
+	       heat,
+	</if>
+	<if test="bean.bewrite   !=null and bean.bewrite   !=''">
+	      bewrite ,
+	</if>
+	<if test="bean.state   !=null and bean.state   !=''">
+	       state,
+	</if>
+	<if test="bean.stock  !=null and bean.stock   !=''">
+	       stock,
+	</if>
+	<if test="bean.format !=null and bean.format   !=''">
+	       format,
+	</if>
+	<if test="bean.freight  !=null">
+	       freight,
+	</if>
+	<if test="bean.createtime  !=null">
+	       createtime
+	</if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	  	  <if test="bean.uid   !=null and bean.uid   !=''">
+	       #{bean.uid },
+	</if>
+	  <if test="bean.bid   !=null and bean.bid   !=''">
+	       #{bean.bid },
+	</if>
+	<if test="bean.cid   !=null and bean.cid   !=''">
+	       #{bean.cid },
+	</if>
+	<if test="bean.pname !=null and bean.pname !=''">
+	      #{bean.pname },
+	</if>
+	<if test="bean.cityprice !=null">
+	       #{bean.cityprice },
+	</if>
+	<if test="bean.sellprice   !=null ">
+	       #{bean.sellprice },
+	</if>
+	<if test="bean.pimage   !=null and bean.pimage   !=''">
+	      #{bean.pimage },
+	</if>
+	<if test="bean.heat   !=null">
+	      #{bean.heat },
+	</if>
+	<if test="bean.bewrite   !=null and bean.bewrite   !=''">
+	    #{bean.bewrite },
+	</if>
+	<if test="bean.state   !=null and bean.state   !=''">
+	      #{bean.state },
+	</if>
+	<if test="bean.stock  !=null and bean.stock   !=''">
+	      #{bean.stock },
+	</if>
+	<if test="bean.format !=null and bean.format   !=''">
+	       #{bean.format },
+	</if>
+	<if test="bean.freight  !=null">
+	       #{bean.freight },
+	</if>
+	<if test="bean.createtime  !=null">
+	       #{bean.createtime }
+	</if>
+	  </trim>
+	</insert>
+	<!-- 查询个数 -->
+	<select id="getcount" parameterType="com.irs.bean.Product" resultType="int">
+	select count(pid) from tb_product 
+	<where>
+		   <if test="bean.uid !=null and bean.uid !=''">
+		   and uid=#{bean.uid}
+		    </if>
+			<if test="bean.pname !=null  and bean.pname !=''">
+				and pname  like '%${bean.pname}%'
+			</if>
+			<if test="bean.bid !=0 and bean.bid !=null">
+			and bid =#{bean.bid}
+			</if>
+		</where>
+	
+	</select>
+	
+	<select id="getinfo" parameterType="Integer" resultMap="Goods">
+	select * from tb_product where pid=#{pid}
+	</select>
+	
+	
+	
+	
+
+
+</mapper>
